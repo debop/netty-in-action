@@ -12,11 +12,23 @@
     <artifactId>chapter02</artifactId>
     <packaging>pom</packaging>
 
+    <modules>
+        <module>nia-echo-server</module>
+    </modules>
+
 
     <properties>
         <echo-server.host>localhost</echo-server.host>
         <echo-server.port>8888</echo-server.port>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.debop</groupId>
+            <artifactId>netty-utils</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
