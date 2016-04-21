@@ -16,7 +16,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         final ByteBuf in = (ByteBuf) msg;
         final String s = ByteBufEx.toUtf8String(in);
-        log.debug("Server received: {}", s);
+        log.debug("Server received: {}", s.trim());
 
         // echo
         ctx.write(in);

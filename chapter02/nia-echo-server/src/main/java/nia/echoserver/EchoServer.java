@@ -52,6 +52,7 @@ public class EchoServer {
             ChannelFuture f = bootstrap.bind(port).sync();
             log.debug("{} started and listening for connection on {}",
                       EchoServer.class.getName(), f.channel().localAddress());
+
             f.channel().closeFuture().sync();
         } finally {
             workGroup.shutdownGracefully().sync();
