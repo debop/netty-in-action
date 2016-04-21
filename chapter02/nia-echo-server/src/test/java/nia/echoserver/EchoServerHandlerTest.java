@@ -14,23 +14,24 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 public class EchoServerHandlerTest {
 
-    @Test
-    public void testEchoServer() {
-        final String ping = "Netty rocks!";
-        EmbeddedChannel channel = new EmbeddedChannel(new EchoServerHandler());
-        try {
-            final ByteBuf msg = ByteBufEx.toByteBuf(ping);
-            channel.writeInbound(msg);
+  @Test
+  public void testEchoServer() {
+    final String ping = "Netty rocks!";
+
+    EmbeddedChannel channel = new EmbeddedChannel(new EchoServerHandler());
+    try {
+      final ByteBuf msg = ByteBufEx.toByteBuf(ping);
+      channel.writeInbound(msg);
 //            channel.writeAndFlush(msg);
 
-            final ByteBuf result = (ByteBuf) channel.readOutbound();
-            assertThat(result).isNotNull();
+      final ByteBuf result = (ByteBuf) channel.readOutbound();
+      assertThat(result).isNotNull();
 
-            final String response = ByteBufEx.toUtf8String(result);
-            log.debug("Client received: {}", response);
-            assertThat(response).isEqualTo(ping);
-        } finally {
-            channel.close();
-        }
+      final String response = ByteBufEx.toUtf8String(result);
+      log.debug("Client received: {}", response);
+      assertThat(response).isEqualTo(ping);
+    } finally {
+      channel.close();
     }
+  }
 }
