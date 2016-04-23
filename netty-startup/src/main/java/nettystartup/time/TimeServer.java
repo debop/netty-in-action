@@ -12,6 +12,6 @@ import nettystartup.NettyStartupUtil;
 public class TimeServer {
 
   public static void main(String[] args) throws Exception {
-    NettyStartupUtil.runServer(8021, new TimeServerHandler());
+    NettyStartupUtil.runServer(8022, new TimeServerHandler());
   }
 }

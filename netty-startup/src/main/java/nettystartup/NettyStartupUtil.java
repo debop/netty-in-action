@@ -12,11 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.function.Consumer;
 
-/**
- * NettyStartupUtil
- *
- * @author sunghyouk.bae@gmail.com
- */
 @Slf4j
 public final class NettyStartupUtil {
 
