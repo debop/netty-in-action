@@ -17,22 +17,22 @@ import nia.utils.ByteBufEx;
 @Slf4j
 public class ChannelOperationExamples {
 
-    public static void writingToChannel() {
-        Channel channel = new EmbeddedChannel(new ChannelHandlerAdapter() {});
+  public static void writingToChannel() {
+    Channel channel = new EmbeddedChannel(new ChannelHandlerAdapter() {});
 
-        ByteBuf buf = ByteBufEx.toByteBuf("your data");
-        ChannelFuture cf = channel.write(buf);
+    ByteBuf buf = ByteBufEx.toByteBuf("your data");
+    ChannelFuture cf = channel.write(buf);
 
-        cf.addListener(new ChannelFutureListener() {
-            @Override
-            public void operationComplete(ChannelFuture future) throws Exception {
-                if (future.isSuccess()) {
-                    log.info("Write successful");
-                } else {
-                    log.error("Write error");
-                    future.cause().printStackTrace();
-                }
-            }
-        });
-    }
+    cf.addListener(new ChannelFutureListener() {
+      @Override
+      public void operationComplete(ChannelFuture future) throws Exception {
+        if (future.isSuccess()) {
+          log.info("Write successful");
+        } else {
+          log.error("Write error");
+          future.cause().printStackTrace();
+        }
+      }
+    });
+  }
 }

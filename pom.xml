@@ -7,16 +7,18 @@
     <groupId>com.github.debop</groupId>
     <artifactId>netty-in-action-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>Netty In Action</name>
+
     <modules>
         <module>chapter02</module>
         <module>netty-utils</module>
         <module>chapter04</module>
         <module>chapter06</module>
         <module>chapter09</module>
-    </modules>
-    <packaging>pom</packaging>
-    <name>Netty In Action</name>
 
+        <module>netty-startup</module>
+    </modules>
 
     <properties>
         <java.version>1.8</java.version>

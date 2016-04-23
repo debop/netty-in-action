@@ -13,8 +13,8 @@ import io.netty.util.ReferenceCountUtil;
 @ChannelHandler.Sharable
 public class DiscardInboundHandler extends ChannelInboundHandlerAdapter {
 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        ReferenceCountUtil.release(msg);
-    }
+  @Override
+  public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    ReferenceCountUtil.release(msg);
+  }
 }

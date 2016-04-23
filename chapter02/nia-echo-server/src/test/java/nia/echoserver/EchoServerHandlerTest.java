@@ -22,8 +22,6 @@ public class EchoServerHandlerTest {
     try {
       final ByteBuf msg = ByteBufEx.toByteBuf(ping);
       channel.writeInbound(msg);
-//            channel.writeAndFlush(msg);
-
       final ByteBuf result = (ByteBuf) channel.readOutbound();
       assertThat(result).isNotNull();
 
