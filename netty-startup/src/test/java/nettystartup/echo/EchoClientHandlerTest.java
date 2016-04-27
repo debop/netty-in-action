@@ -18,9 +18,13 @@ public class EchoClientHandlerTest {
   public void testEchoClientHandler() {
     EmbeddedChannel channel = new EmbeddedChannel(new EchoClientHandler());
 
-    ByteBuf r = (ByteBuf) channel.readOutbound();
-    assertThat(r).isNotNull();
-    String str = ByteBufEx.toUtf8String(r);
-    assertThat(str).isEqualTo("Netty rocks");
+    try {
+      ByteBuf r = (ByteBuf) channel.readOutbound();
+      assertThat(r).isNotNull();
+      String str = ByteBufEx.toUtf8String(r);
+      assertThat(str).isEqualTo("Netty rocks");
+    } finally {
+      channel.close();
+    }
   }
 }

@@ -16,15 +16,20 @@ public class EchoServerHandlerTest {
   public void testEcho() {
     String m = "echo test\n";
     EmbeddedChannel channel = new EmbeddedChannel(new EchoServerHandler());
-    ByteBuf in = ByteBufEx.toByteBuf(m);
-    channel.writeInbound(in);
 
-    ByteBuf r = (ByteBuf) channel.readOutbound();
-    ReferenceCountUtil.releaseLater(r);
+    try {
+      ByteBuf in = ByteBufEx.toByteBuf(m);
+      channel.writeInbound(in);
 
-    assertThat(r).isNotNull();
-    final String str = ByteBufEx.toUtf8String(r);
-    log.debug("echo message: {}", str);
-    assertThat(str).isEqualTo(m);
+      ByteBuf r = (ByteBuf) channel.readOutbound();
+      ReferenceCountUtil.releaseLater(r);
+
+      assertThat(r).isNotNull();
+      final String str = ByteBufEx.toUtf8String(r);
+      log.debug("echo message: {}", str);
+      assertThat(str).isEqualTo(m);
+    } finally {
+      channel.close();
+    }
   }
 }

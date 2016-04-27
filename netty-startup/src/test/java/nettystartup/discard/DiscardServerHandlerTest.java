@@ -20,10 +20,15 @@ public class DiscardServerHandlerTest {
   public void testDiscardServerHandler() {
     String m = "discard test";
     EmbeddedChannel ch = new EmbeddedChannel(new DiscardServerHandler());
-    ByteBuf in = ByteBufEx.toByteBuf(m);
-    ch.writeInbound(in);
 
-    ByteBuf r = (ByteBuf) ch.readOutbound();
-    assertThat(r).isNull();
+    try {
+      ByteBuf in = ByteBufEx.toByteBuf(m);
+      ch.writeInbound(in);
+
+      ByteBuf r = (ByteBuf) ch.readOutbound();
+      assertThat(r).isNull();
+    } finally {
+      ch.close();
+    }
   }
 }

@@ -19,12 +19,16 @@ public class TimeServerHandlerTest {
   public void testTimeServerHandler() {
     EmbeddedChannel channel = new EmbeddedChannel(new TimeServerHandler());
 
-    ByteBuf r = (ByteBuf) channel.readOutbound();
-    assertThat(r).isNotNull();
+    try {
+      ByteBuf r = (ByteBuf) channel.readOutbound();
+      assertThat(r).isNotNull();
 
-    long time = r.readLong();
-    log.debug("received time= {}", time);
-    assertThat(time).isGreaterThan(0L)
-                    .isLessThanOrEqualTo(System.currentTimeMillis());
+      long time = r.readLong();
+      log.debug("received time= {}", time);
+      assertThat(time).isGreaterThan(0L)
+                      .isLessThanOrEqualTo(System.currentTimeMillis());
+    } finally {
+      channel.close();
+    }
   }
 }

@@ -20,12 +20,16 @@ public class PromisingServerHandlerTest {
   public void testPromising() {
     EmbeddedChannel channel = new EmbeddedChannel(new PromisingServerHandler());
 
-    channel.writeInbound("send message");
+    try {
+      channel.writeInbound("send message");
 
-    String res = (String) channel.readOutbound();
-    assertThat(res).isNotEmpty();
-    log.debug("res: {}", res);
+      String res = (String) channel.readOutbound();
+      assertThat(res).isNotEmpty();
+      log.debug("res: {}", res);
 
-    Thread.sleep(1500);
+      Thread.sleep(1500);
+    } finally {
+      channel.close();
+    }
   }
 }
