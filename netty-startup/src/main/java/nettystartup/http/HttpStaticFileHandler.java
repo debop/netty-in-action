@@ -20,11 +20,13 @@ public class HttpStaticFileHandler extends SimpleChannelInboundHandler<FullHttpR
   }
 
   @Override
-  protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
-    if (request.getUri().equals(path)) {
-      sendStaticFile(ctx, request);
+  protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest req) throws Exception {
+    // 이 Handler는 SimpleChannelInboundHandler<I>를 확장했지만 "auto-release: false"임에 주의합니다.
+    // 상황에 따라 "필요시"에는 retain()을 부르도록 합니다.
+    if (req.getUri().equals(path)) {
+      sendStaticFile(ctx, req);
     } else {
-      ctx.fireChannelRead(request);
+      ctx.fireChannelRead(req);
     }
   }
 

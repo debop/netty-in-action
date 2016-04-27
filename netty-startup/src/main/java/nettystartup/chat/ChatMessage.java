@@ -1,8 +1,8 @@
 package nettystartup.chat;
 
 import kesti4j.core.AbstractValueObject;
-import kesti4j.core.ToStringHelper;
 import kesti4j.core.utils.HashEx;
+import kesti4j.core.utils.StringEx;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -59,12 +59,13 @@ public class ChatMessage extends AbstractValueObject {
     return HashEx.compute(command, nickname, text);
   }
   @Override
-  public ToStringHelper buildStringHelper() {
-    return super.buildStringHelper()
-                .add("command", command)
-                .add("nickname", nickname)
-                .add("text", text);
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+    builder.append(command);
+    if (StringEx.isNotEmpty(nickname))
+      builder.append(":").append(nickname);
+    if (StringEx.isNotEmpty(text))
+      builder.append(" ").append(text);
+    return builder.toString();
   }
-
-
 }
