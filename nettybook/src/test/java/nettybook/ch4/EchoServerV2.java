@@ -14,7 +14,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 public class EchoServerV2 {
 
   public static void main(String[] args) throws Exception {
-    EventLoopGroup baseGroup = new NioEventLoopGroup(1);
+    EventLoopGroup baseGroup = new NioEventLoopGroup(4);
     EventLoopGroup workGroup = new NioEventLoopGroup();
 
     try {
