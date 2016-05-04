@@ -24,6 +24,7 @@ public class EchoClient {
          protected void initChannel(SocketChannel socketChannel) throws Exception {
            ChannelPipeline pipe = socketChannel.pipeline();
            pipe.addLast(new EchoClientHandler1());
+           pipe.addLast(new EchoClientHandler2());
            pipe.addLast(new LoggingHandler());
          }
        });

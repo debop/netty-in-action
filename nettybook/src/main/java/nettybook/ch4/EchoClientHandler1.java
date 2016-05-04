@@ -20,4 +20,35 @@ public class EchoClientHandler1 extends ChannelOutboundHandlerAdapter {
     log.debug("close");
     super.close(ctx, promise);
   }
+
+  @Override
+  public void deregister(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
+    log.debug("deregistered");
+    super.deregister(ctx, promise);
+  }
+  @Override
+  public void read(ChannelHandlerContext ctx) throws Exception {
+    log.debug("read");
+    super.read(ctx);
+  }
+  @Override
+  public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
+    log.debug("write... msg={}", msg);
+    super.write(ctx, msg, promise);
+  }
+  @Override
+  public void flush(ChannelHandlerContext ctx) throws Exception {
+    log.debug("flush");
+    super.flush(ctx);
+  }
+  @Override
+  public void disconnect(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
+    log.debug("disconnect...");
+    super.disconnect(ctx, promise);
+  }
+  @Override
+  public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+    log.error("에러 발생", cause);
+    super.exceptionCaught(ctx, cause);
+  }
 }
