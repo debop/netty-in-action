@@ -40,4 +40,53 @@ public class ByteBufferTest {
 
     log.debug("read status = {}", buffer);
   }
+
+  @Test
+  public void byteBufferWrite() {
+    ByteBuffer buffer = ByteBuffer.allocate(11);
+    log.debug("initial status = {}", buffer);
+
+    buffer.put((byte) 1);
+    buffer.put((byte) 2);
+    buffer.put((byte) 3);
+    buffer.put((byte) 4);
+
+    assertThat(buffer.position()).isEqualTo(4);
+    assertThat(buffer.limit()).isEqualTo(11);
+    assertThat(buffer.capacity()).isEqualTo(11);
+
+    buffer.flip();
+    assertThat(buffer.position()).isEqualTo(0);
+    assertThat(buffer.limit()).isEqualTo(4);
+    assertThat(buffer.capacity()).isEqualTo(11);
+
+    log.debug("read status = {}", buffer);
+  }
+
+  @Test
+  public void byteBufferRead() {
+    byte[] tempArray = { 1, 2, 3, 4, 5, 0, 0, 0, 0, 0, 0 };
+    ByteBuffer firstBuffer = ByteBuffer.wrap(tempArray);
+    assertThat(firstBuffer.position()).isEqualTo(0);
+    assertThat(firstBuffer.limit()).isEqualTo(tempArray.length);
+    assertThat(firstBuffer.capacity()).isEqualTo(tempArray.length);
+
+    assertThat(firstBuffer.get()).isEqualTo((byte) 1);
+    assertThat(firstBuffer.get()).isEqualTo((byte) 2);
+    assertThat(firstBuffer.get()).isEqualTo((byte) 3);
+    assertThat(firstBuffer.get()).isEqualTo((byte) 4);
+    assertThat(firstBuffer.position()).isEqualTo(4);
+    assertThat(firstBuffer.capacity()).isEqualTo(tempArray.length);
+
+    firstBuffer.flip();
+
+    assertThat(firstBuffer.position()).isEqualTo(0);
+    assertThat(firstBuffer.limit()).isEqualTo(4);
+    assertThat(firstBuffer.capacity()).isEqualTo(11);
+
+    log.debug("get(3)={}", firstBuffer.get(3));
+
+    assertThat(firstBuffer.position()).isEqualTo(0);
+    assertThat(firstBuffer.limit()).isEqualTo(4);
+  }
 }

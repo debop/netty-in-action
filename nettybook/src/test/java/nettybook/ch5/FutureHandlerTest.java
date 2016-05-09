@@ -10,9 +10,6 @@ import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * @author sunghyouk.bae@gmail.com
- */
 public class FutureHandlerTest {
 
   static final String sendStr = "Hello netty";

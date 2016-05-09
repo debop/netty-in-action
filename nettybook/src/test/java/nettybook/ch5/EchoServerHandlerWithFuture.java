@@ -12,9 +12,8 @@ public class EchoServerHandlerWithFuture extends ChannelInboundHandlerAdapter {
 
   @Override
   public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-    ChannelFuture channelFuture = ctx.writeAndFlush(msg);
-
     final int writeMessageSize = ((ByteBuf) msg).readableBytes();
+    ChannelFuture channelFuture = ctx.writeAndFlush(msg);
 
     channelFuture.addListener(new ChannelFutureListener() {
       @Override
