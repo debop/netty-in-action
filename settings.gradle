@@ -1,0 +1,18 @@
+rootProject.name = 'netty-in-action-parent'
+include ':chapter02:nia-echo-server'
+include ':chapter02'
+include ':netty-utils'
+include ':chapter04'
+include ':chapter06'
+include ':chapter09'
+include ':netty-startup'
+include ':nettybook'
+
+project(':chapter02:nia-echo-server').projectDir = "$rootDir/chapter02/nia-echo-server" as File
+project(':chapter02').projectDir = "$rootDir/chapter02" as File
+project(':netty-utils').projectDir = "$rootDir/netty-utils" as File
+project(':chapter04').projectDir = "$rootDir/chapter04" as File
+project(':chapter06').projectDir = "$rootDir/chapter06" as File
+project(':chapter09').projectDir = "$rootDir/chapter09" as File
+project(':netty-startup').projectDir = "$rootDir/netty-startup" as File
+project(':nettybook').projectDir = "$rootDir/nettybook" as File
