@@ -6,6 +6,9 @@ import io.netty.buffer.Unpooled;
 import io.netty.util.CharsetUtil;
 import org.junit.Test;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -19,6 +22,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 6. ByteBuffer 와 ByteBuf 상호 변환
  */
 public class ByteBufTest {
+
+  private final String sourceData = "hello world";
 
   @Test
   public void createUnpooledHeapByteBuf() {
@@ -69,7 +74,7 @@ public class ByteBufTest {
     assertThat(buf.capacity()).isEqualTo(11);
     assertThat(buf.isDirect()).isEqualTo(isDirect);
 
-    String sourceData = "hello world";
+
     buf.writeBytes(sourceData.getBytes(CharsetUtil.UTF_8));
     assertThat(buf.readableBytes()).isEqualTo(11);
     assertThat(buf.writableBytes()).isEqualTo(0);
@@ -97,6 +102,43 @@ public class ByteBufTest {
     buf.writeShort(-1);
 
     assertThat(buf.getUnsignedShort(0)).isEqualTo(0xFFFF);
+  }
+
+  @Test
+  public void orderedByteBuf() {
+    ByteBuf buf = Unpooled.buffer();
+    assertThat(buf.order()).isEqualTo(ByteOrder.BIG_ENDIAN);
+
+    buf.writeShort(1);
+    buf.markReaderIndex();
+    assertThat(buf.readShort()).isEqualTo((short) 1);
+
+    buf.resetReaderIndex();
+
+    ByteBuf littleEndianBuf = buf.order(ByteOrder.LITTLE_ENDIAN);
+    assertThat(littleEndianBuf.readShort()).isEqualTo((short) 0x0100);  // 0x0001 -> 0x0100
+  }
+
+  @Test
+  public void convertNettyBufferToJavaBuffer() {
+    ByteBuf buf = Unpooled.buffer(11);
+    buf.writeBytes(sourceData.getBytes(CharsetUtil.UTF_8));
+
+    assertThat(buf.toString(CharsetUtil.UTF_8)).isEqualTo(sourceData);
+
+    ByteBuffer nioByteBuffer = buf.nioBuffer();
+    assertThat(nioByteBuffer).isNotNull();
+
+    String str = new String(nioByteBuffer.array(), nioByteBuffer.arrayOffset(), nioByteBuffer.remaining());
+    assertThat(str).isNotEmpty().isEqualTo(sourceData);
+  }
+
+  @Test
+  public void convertJavaBufferToNettyBuffer() {
+    ByteBuffer byteBuffer = ByteBuffer.wrap(sourceData.getBytes(CharsetUtil.UTF_8));
+    ByteBuf nettyBuf = Unpooled.wrappedBuffer(byteBuffer);
+
+    assertThat(nettyBuf.toString(CharsetUtil.UTF_8)).isEqualTo(sourceData);
   }
 
 
