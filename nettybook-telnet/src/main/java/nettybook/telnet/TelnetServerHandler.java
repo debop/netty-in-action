@@ -29,6 +29,9 @@ public class TelnetServerHandler extends SimpleChannelInboundHandler<String> {
 
   @Override
   protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
+
+    log.debug("수신: {}", msg);
+
     String response;
     boolean close = false;
 
@@ -38,10 +41,11 @@ public class TelnetServerHandler extends SimpleChannelInboundHandler<String> {
       response = "좋은 하루되세요!\r\n";
       close = true;
     } else {
-      response = "입력하신 명령이 " + msg + "입니까?\r\n";
+      response = "입력하신 명령이 " + msg + " 입니까?\r\n";
     }
 
     ChannelFuture future = ctx.write(response);
+    log.debug("전송: {}", response);
 
     if (close) {
       future.addListener(ChannelFutureListener.CLOSE);
