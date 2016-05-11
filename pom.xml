@@ -20,6 +20,7 @@
         <module>netty-startup</module>
         <module>nettybook</module>
         <module>nettybook-telnet</module>
+        <module>nettybook-apiserver</module>
     </modules>
 
     <properties>
