@@ -1,6 +1,7 @@
 package nettybook.apiserver.config;
 
 import lombok.extern.slf4j.Slf4j;
+import nettybook.apiserver.ApiServer;
 import nettybook.apiserver.domain.repository.UserRepository;
 import nettybook.apiserver.service.UserService;
 import org.junit.Test;
@@ -22,10 +23,17 @@ public class ApiServerConfigurationTest {
   @Inject UserRepository userRepo;
   @Inject UserService userService;
 
+  @Inject ApiServer apiServer;
+
   @Test
   public void testConfiguration() {
     assertThat(session).isNotNull();
     assertThat(userRepo).isNotNull();
     assertThat(userService).isNotNull();
+  }
+
+  @Test
+  public void testApiServer() {
+    assertThat(apiServer).isNotNull();
   }
 }

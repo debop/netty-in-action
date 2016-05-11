@@ -1,7 +1,11 @@
 package nettybook.apiserver.core;
 
-/**
- * @author sunghyouk.bae@gmail.com
- */
 public interface KeyMaker {
+
+  /**
+   * 키 생성기로부터 만들어진 키를 반환한다.
+   *
+   * @return 만들어진 키
+   */
+  public String getKey();
 }
