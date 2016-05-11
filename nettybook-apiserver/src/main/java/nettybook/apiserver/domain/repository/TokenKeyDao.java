@@ -1,4 +1,4 @@
-package nettybook.apiserver.domain.dao;
+package nettybook.apiserver.domain.repository;
 
 /**
  * @author sunghyouk.bae@gmail.com
