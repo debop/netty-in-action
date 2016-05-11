@@ -7,6 +7,7 @@ import nettybook.apiserver.service.UserService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.redisson.RedissonClient;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -25,6 +26,11 @@ public class ApiServerConfigurationTest {
 
   @Inject ApiServer apiServer;
 
+  @Inject ApiServerSetting apiServerSetting;
+
+  @Inject RedisSetting redisSetting;
+  @Inject RedissonClient redissonClient;
+
   @Test
   public void testConfiguration() {
     assertThat(session).isNotNull();
@@ -32,8 +38,23 @@ public class ApiServerConfigurationTest {
     assertThat(userService).isNotNull();
   }
 
+
   @Test
   public void testApiServer() {
     assertThat(apiServer).isNotNull();
+  }
+
+  @Test
+  public void testApiServerSetting() {
+    assertThat(apiServerSetting).isNotNull();
+    assertThat(apiServerSetting.getBaseThreadCount()).isEqualTo(1);
+  }
+
+  @Test
+  public void testRedisConfiguration() {
+    assertThat(redisSetting).isNotNull();
+    assertThat(redisSetting.getHost()).isEqualTo("localhost");
+
+    assertThat(redissonClient).isNotNull();
   }
 }
