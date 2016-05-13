@@ -20,12 +20,15 @@ import java.util.Map;
 @Slf4j
 public class TokenExpirer extends ApiRequestTemplate {
 
+  public TokenExpirer() {}
   public TokenExpirer(Map<String, String> reqData) {
     super(reqData);
   }
 
   @Override
   public void requestParamValidation() throws RequestParamException {
+    super.requestParamValidation();
+
     if (StringEx.isEmpty(reqData.get("token"))) {
       throw new RequestParamException("token 이 없습니다.");
     }
@@ -33,15 +36,19 @@ public class TokenExpirer extends ApiRequestTemplate {
 
   @Override
   public void service() throws ServiceException {
+    String tokenKey = reqData.get("token");
 
-    String key = reqData.get("token");
-    if (StringEx.isNotEmpty(key)) {
-      RBucket<String> bucket = getRedisson().getBucket(key);
+    log.debug("토큰을 삭제합니다... key={}", tokenKey);
+
+    if (StringEx.isNotEmpty(tokenKey)) {
+      RBucket<String> bucket = getRedisson().getBucket(tokenKey);
       bucket.delete();
 
       apiResult.addProperty("resultCode", "200");
       apiResult.addProperty("message", "success");
-      apiResult.addProperty("token", key);
+      apiResult.addProperty("token", tokenKey);
+
+      log.debug("토큰 정보를 삭제했습니다. apiResult={}", apiResult);
     }
   }
 }

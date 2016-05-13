@@ -3,6 +3,7 @@ package nettybook.apiserver.core;
 import com.google.gson.JsonObject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.collections.impl.factory.Maps;
 import org.redisson.RedissonClient;
 
 import javax.inject.Inject;
@@ -17,6 +18,10 @@ public abstract class ApiRequestTemplate implements ApiRequest {
 
   protected Map<String, String> reqData;
   protected JsonObject apiResult;
+
+  public ApiRequestTemplate() {
+    reqData = Maps.mutable.of();
+  }
 
   public ApiRequestTemplate(Map<String, String> reqData) {
     this.reqData = reqData;
@@ -41,6 +46,8 @@ public abstract class ApiRequestTemplate implements ApiRequest {
 
   @Override
   public void requestParamValidation() throws RequestParamException {
+    log.trace("요청정보를 검사합니다... reqData={}", reqData);
+
     if (getClass().getClasses().length == 0) {
       return;
     }

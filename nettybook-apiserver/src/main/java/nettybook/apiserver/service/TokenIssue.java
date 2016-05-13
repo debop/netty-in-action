@@ -37,6 +37,8 @@ public class TokenIssue extends ApiRequestTemplate {
 
   @Override
   public void requestParamValidation() throws RequestParamException {
+    super.requestParamValidation();
+
     if (StringEx.isEmpty(reqData.get("userNo"))) {
       throw new RequestParamException("userNo 가 없습니다.");
     }
@@ -47,9 +49,12 @@ public class TokenIssue extends ApiRequestTemplate {
 
   @Override
   public void service() throws ServiceException {
+    log.debug("사용자 토큰을 발행합니다... reqData={}", reqData);
+
     User user = userRepo.findByPassword(reqData.get("password"));
 
     if (user == null) {
+      log.warn("사용자 정보가 없습니다. userNo={}", reqData.get("userNo"));
       apiResult.addProperty("resultCode", "404");
     } else {
 
@@ -65,6 +70,8 @@ public class TokenIssue extends ApiRequestTemplate {
       apiResult.addProperty("resultCode", "200");
       apiResult.addProperty("message", "success");
       apiResult.addProperty("token", tokenKey.getKey());
+
+      log.debug("토큰을 발생했습니다. apiResult={}", apiResult);
     }
   }
 
