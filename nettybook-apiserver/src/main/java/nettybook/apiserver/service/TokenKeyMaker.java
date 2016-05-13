@@ -1,4 +1,4 @@
-package nettybook.apiserver.domain.repository;
+package nettybook.apiserver.service;
 
 import io.netty.util.CharsetUtil;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import nettybook.apiserver.utils.MurmurHash3;
 
 @Slf4j
 @Getter
-public class TokenKeyRepository implements KeyMaker {
+public class TokenKeyMaker implements KeyMaker {
 
   static final int SEED_MURMURHASH = 0x1234ABCD;
 
@@ -16,7 +16,7 @@ public class TokenKeyRepository implements KeyMaker {
   private final long issueDate;
   private final byte[] bytes;
 
-  public TokenKeyRepository(String email, long issueDate) {
+  public TokenKeyMaker(String email, long issueDate) {
     this.email = email;
     this.issueDate = issueDate;
 

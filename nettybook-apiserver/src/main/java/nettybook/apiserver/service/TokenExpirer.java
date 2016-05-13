@@ -1,8 +1,7 @@
 package nettybook.apiserver.service;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import kesti4j.core.utils.StringEx;
+import lombok.extern.slf4j.Slf4j;
 import nettybook.apiserver.core.ApiRequestTemplate;
 import nettybook.apiserver.core.RequestParamException;
 import nettybook.apiserver.core.ServiceException;
@@ -14,13 +13,14 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 /**
- * 토큰 값을 검증합니다.
+ * API Token 을 삭제합니다
  */
-@Service("tokenVerify")
+@Service("tokenExpirer")
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-public class TokenVerify extends ApiRequestTemplate {
+@Slf4j
+public class TokenExpirer extends ApiRequestTemplate {
 
-  protected TokenVerify(Map<String, String> reqData) {
+  public TokenExpirer(Map<String, String> reqData) {
     super(reqData);
   }
 
@@ -33,23 +33,15 @@ public class TokenVerify extends ApiRequestTemplate {
 
   @Override
   public void service() throws ServiceException {
-    String tokenKey = reqData.get("token");
-    RBucket<String> bucket = getRedisson().getBucket(tokenKey);
 
-    if (bucket.isExists()) {
-      String tokenStr = bucket.get();
-      JsonObject token = new Gson().fromJson(tokenStr, JsonObject.class);
+    String key = reqData.get("token");
+    if (StringEx.isNotEmpty(key)) {
+      RBucket<String> bucket = getRedisson().getBucket(key);
+      bucket.delete();
 
       apiResult.addProperty("resultCode", "200");
-      apiResult.addProperty("message", "Success");
-      apiResult.add("issueDate", token.get("issueDate"));
-      apiResult.add("email", token.get("email"));
-      apiResult.add("userNo", token.get("userNo"));
-
-    } else {
-      apiResult.addProperty("resultCode", "404");
-      apiResult.addProperty("message", "Fail");
+      apiResult.addProperty("message", "success");
+      apiResult.addProperty("token", key);
     }
-
   }
 }

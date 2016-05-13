@@ -1,6 +1,5 @@
 package nettybook.apiserver.core;
 
-import kesti4j.core.NotImplementedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -21,6 +20,36 @@ public class ServiceDispatcher {
   }
 
   public static ApiRequest dispatch(Map<String, String> requestMap) {
-    throw new NotImplementedException("구현 중");
+    log.trace("requestMap={}", requestMap);
+
+    String serviceUri = requestMap.get("REQUEST_URI");
+
+    if (serviceUri == null) {
+      return (ApiRequest) appContext.getBean("notFound", requestMap);
+    }
+
+
+    if (serviceUri.startsWith("/tokens")) {
+      String httpMethod = requestMap.get("REQUEST_METHOD");
+      String beanName = getBeanName(httpMethod);
+
+      return (ApiRequest) appContext.getBean(beanName, requestMap);
+    }
+
+    return null;
+  }
+
+  private static String getBeanName(String httpMethod) {
+    switch (httpMethod) {
+      case "POST":
+        return "tokenIssue";
+      case "DELETE":
+        return "tokenExpirer";
+      case "GET":
+        return "tokenVerify";
+
+      default:
+        return "notFound";
+    }
   }
 }

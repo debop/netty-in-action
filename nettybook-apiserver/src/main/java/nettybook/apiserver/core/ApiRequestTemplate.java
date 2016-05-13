@@ -3,7 +3,9 @@ package nettybook.apiserver.core;
 import com.google.gson.JsonObject;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.RedissonClient;
 
+import javax.inject.Inject;
 import java.util.Map;
 import java.util.Objects;
 
@@ -11,10 +13,12 @@ import java.util.Objects;
 @Getter
 public abstract class ApiRequestTemplate implements ApiRequest {
 
+  @Inject private RedissonClient redisson;
+
   protected Map<String, String> reqData;
   protected JsonObject apiResult;
 
-  protected ApiRequestTemplate(Map<String, String> reqData) {
+  public ApiRequestTemplate(Map<String, String> reqData) {
     this.reqData = reqData;
     this.apiResult = new JsonObject();
 
